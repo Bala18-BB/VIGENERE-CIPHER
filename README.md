@@ -30,7 +30,104 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 
 ## PROGRAM
+```
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdlib.h>
+
+void encipher();
+void decipher();
+
+int main()
+{
+    int choice;
+
+    while (1)
+    {
+        printf("\n1. Encrypt Text");
+        printf("\t2. Decrypt Text");
+        printf("\t3. Exit");
+        printf("\n\nEnter Your Choice: ");
+        if (scanf("%d", &choice) != 1) {
+            // Handle non-numeric input
+            printf("Invalid input.\n");
+            // clear input buffer
+            int ch;
+            while ((ch = getchar()) != '\n' && ch != EOF);
+            continue;
+        }
+
+        if (choice == 3) {
+            return 0;       // Exit program
+        } else if (choice == 1) {
+            encipher();
+        } else if (choice == 2) {
+            decipher();
+        } else {
+            printf("Please Enter a Valid Option.\n");
+        }
+    }
+}
+
+/* Encrypt plain text using Vigenère cipher */
+void encipher()
+{
+    unsigned int i, j;
+    char input[50], key[10];
+
+    printf("\n\nEnter Plain Text: ");
+    scanf("%49s", input);       // limit to avoid overflow
+    printf("Enter Key Value: ");
+    scanf("%9s", key);
+
+    printf("\nResultant Cipher Text: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++)
+    {
+        if (j >= strlen(key))
+            j = 0;  // Reset key index
+
+        printf("%c",
+               'A' + ((toupper(input[i]) - 'A'
+                      + toupper(key[j]) - 'A') % 26));
+    }
+    printf("\n");
+}
+
+/* Decrypt cipher text using Vigenère cipher */
+void decipher()
+{
+    unsigned int i, j;
+    char input[50], key[10];
+    int value;
+
+    printf("\n\nEnter Cipher Text: ");
+    scanf("%49s", input);
+    printf("Enter the Key Value: ");
+    scanf("%9s", key);
+
+    printf("\nDecrypted Plain Text: ");
+    for (i = 0, j = 0; i < strlen(input); i++, j++)
+    {
+        if (j >= strlen(key))
+            j = 0;  // Reset key index
+
+        value = (toupper(input[i]) - 'A') - (toupper(key[j]) - 'A');
+        if (value < 0)
+            value += 26;  // Correct negative wrap-around
+
+        printf("%c", 'A' + (value % 26));
+    }
+    printf("\n");
+}
+
+```
 
 ## OUTPUT
+<img width="885" height="608" alt="Screenshot 2026-10-30 134259" src="https://github.com/user-attachments/assets/078d3aee-4a36-4ff8-b63f-1fa282861e60" />
+
 
 ## RESULT
+The program is executed successfully
+
+
